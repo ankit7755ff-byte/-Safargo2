@@ -84,6 +84,11 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 #sr #joy{position:absolute;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;border:3px solid rgba(255,255,255,.7);background:rgba(16,50,58,.12);display:none}
 #sr #joy.on{display:block}
 #sr #joyKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:var(--white);box-shadow:0 3px 0 var(--shade)}
+#sr #dpad{display:none}
+#sr.touch #dpad{display:grid;position:absolute;left:calc(18px + env(safe-area-inset-left,0px));bottom:calc(142px + env(safe-area-inset-bottom,0px));width:142px;height:142px;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:5px;pointer-events:auto;touch-action:none}
+#sr #dpad button{display:grid;place-items:center;border:2px solid rgba(255,255,255,.85)!important;border-radius:14px;background:rgba(16,50,58,.78);color:#fff;font:900 25px/1 system-ui;box-shadow:0 3px 0 rgba(0,0,0,.3);padding:0;touch-action:none}
+#sr #dpad button:active,#sr #dpad button.down{background:var(--saffron);color:var(--ink);transform:translateY(2px)}
+#sr #dpad [data-dir=up]{grid-area:1/2}#sr #dpad [data-dir=left]{grid-area:2/1}#sr #dpad [data-dir=right]{grid-area:2/3}#sr #dpad [data-dir=down]{grid-area:3/2}
 #sr #banner{position:fixed;left:0;right:0;top:15%;text-align:center;pointer-events:none;font:400 clamp(40px,8vw,84px)/1 var(--f-display);color:var(--white);
   -webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 6px 0 var(--ink);opacity:0}
 #sr #banner small{display:block;margin-top:8px;font:800 clamp(15px,2.4vw,22px)/1.2 var(--f-body);-webkit-text-stroke:0;text-shadow:0 2px 0 var(--ink),0 0 6px var(--ink)}
@@ -218,6 +223,7 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
   <div class='hud-tr'><h3>LEADERBOARD</h3><ol id='board'></ol></div>
   <canvas height='280' id='minimap' width='280'/>
   <div id='joy'><div id='joyKnob'></div></div>
+  <div aria-label='Snake direction controls' id='dpad'><button aria-label='Up' data-dir='up' type='button'>▲</button><button aria-label='Left' data-dir='left' type='button'>◀</button><button aria-label='Right' data-dir='right' type='button'>▶</button><button aria-label='Down' data-dir='down' type='button'>▼</button></div>
   <div aria-label='Boost' id='boostBtn' role='button'><svg aria-hidden='true' viewbox='0 0 24 24'><path d='M13 2 4 14h6l-1 8 9-12h-6z' fill='currentColor'></path></svg><span>BOOST</span></div>
 </div>
 <div id='banner'></div>
@@ -1461,6 +1467,13 @@ const endPointer = e => {
 };
 addEventListener('pointerup', endPointer); addEventListener('pointercancel', endPointer);
 canvas.addEventListener('contextmenu', e => e.preventDefault());
+const dpadDirs = {up:'w',down:'s',left:'a',right:'d'};
+$('dpad').querySelectorAll('button[data-dir]').forEach(btn => {
+  const key = dpadDirs[btn.dataset.dir];
+  const down = e => { e.preventDefault(); input.keys[key] = true; btn.classList.add('down'); };
+  const up = e => { e.preventDefault(); input.keys[key] = false; btn.classList.remove('down'); };
+  btn.addEventListener('pointerdown', down); btn.addEventListener('pointerup', up); btn.addEventListener('pointercancel', up); btn.addEventListener('pointerleave', up);
+});
 const boostBtn = $('boostBtn');
 boostBtn.addEventListener('pointerdown', e => { e.preventDefault(); input.touchBoost = true; boostBtn.classList.add('on'); });
 const boostOff = () => { input.touchBoost = false; boostBtn.classList.remove('on'); };
