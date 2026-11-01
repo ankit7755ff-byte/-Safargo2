@@ -85,6 +85,7 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 #sr #joy.on{display:block}
 #sr #joyKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:var(--white);box-shadow:0 3px 0 var(--shade)}
 #sr #dpad{display:none}
+@media (max-width:900px){#sr #dpad{display:grid!important;z-index:30;left:16px;bottom:calc(150px + env(safe-area-inset-bottom,0px));width:150px;height:150px}#sr #boostBtn{z-index:30}}
 #sr.touch #dpad{display:grid;position:absolute;left:calc(18px + env(safe-area-inset-left,0px));bottom:calc(142px + env(safe-area-inset-bottom,0px));width:142px;height:142px;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:5px;pointer-events:auto;touch-action:none}
 #sr #dpad button{display:grid;place-items:center;border:2px solid rgba(255,255,255,.85)!important;border-radius:14px;background:rgba(16,50,58,.78);color:#fff;font:900 25px/1 system-ui;box-shadow:0 3px 0 rgba(0,0,0,.3);padding:0;touch-action:none}
 #sr #dpad button:active,#sr #dpad button.down{background:var(--saffron);color:var(--ink);transform:translateY(2px)}
@@ -325,10 +326,12 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem('sr_' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('sr_' + k, JSON.stringify(v)); } catch (e) {} }
 };
-let isTouch = matchMedia('(pointer: coarse)').matches;
+let isTouch = matchMedia('(pointer: coarse)').matches || matchMedia('(max-width: 900px)').matches || (navigator.maxTouchPoints || 0) > 0;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 function setTouch() { isTouch = true; root.classList.add('touch'); $('keysHint').textContent = 'Drag anywhere to steer. Hold BOOST to speed up (costs length).'; }
 if (isTouch) setTouch();
+// Always expose on-screen directional controls on phone-sized viewports.
+if (matchMedia('(max-width: 900px)').matches) { isTouch = true; root.classList.add('touch'); }
 const LOW = isTouch;
 // Quality: 2 = high (desktop), 1 = medium (phones), 0 = low (auto fallback when frames drop)
 const Q = { level: Math.min(store.get('quality', LOW ? 1 : 2), LOW ? 1 : 2) };
