@@ -1,75 +1,91 @@
-# Serpent Royale 3D — Snake Arena (-Safargo2)
+# 🐍 SAFARGO 2 — 3D Snake Royale
 
-A fast-paced, high-retention 3D Battle Royale Snake Arena with real leaderboards, tactile mobile controls, coin economy, and pre-wired Adsterra monetization triggers.
+**Live Game URL:** [https://safargo2.vercel.app/](https://safargo2.vercel.app/)
 
----
-
-## 🚀 What's New in this Update (Naye Features)
-
-### 1. 🎮 Dual Snake Controls (Mobile & Desktop)
-* **4-Way Tactile D-Pad Buttons**: Ergonomic Up (▲), Down (▼), Left (◀), and Right (▶) buttons on bottom-left for instantaneous turning on mobile.
-* **Smooth Virtual Joystick**: Alternative 360° touch analog stick.
-* **Control Switcher Button (🎮)**: Toggle between **D-Pad Buttons** and **Virtual Joystick** anytime with one tap.
-* **Dedicated Turbo BOOST Button (⚡)**: Large golden boost button on the bottom-right with haptic vibration feedback.
-* **Desktop Support**: Arrow keys, WASD, Mouse steering, and Spacebar boost.
-
-### 2. 🏆 Real Global Leaderboard
-* Real-time Champions Leaderboard displaying Top 10 players worldwide with trophies (🥇, 🥈, 🥉), scores, and kill counts.
-* Tracks your personal all-time high score and global rank badge.
-* Viewable anytime via the **🏆 LEADERBOARD** button on Menu, Game Over, and HUD.
-* Scores persist across sessions in local storage and auto-update upon achieving a new record.
-
-### 3. 🪙 Coins Economy & Progression (High User Retention)
-* **Earn Coins**:
-  - Fruits eaten = +1 to +4 coins.
-  - Snake eliminated = +25 coins.
-  - Victory Royale = +100 coins.
-* **Skin Store**:
-  - 11 stylish skins (Sunburst, Red Viper, Emerald, Amethyst, Forest, Cyber Wave, Sakura, Shadow Monarch, Inferno Dragon, Ghost Silver, Neon Sovereign).
-  - Unlock using in-game coins OR get a **Free Unlock with Ad**!
-
-### 4. ❤️ Revive / Second Chance System (High CPM Adsterra Earner)
-* When your snake is eliminated, a 5-second countdown offers a **Second Chance**.
-* Tapping **⚡ REVIVE NOW** restores 65% of your snake length, pushes away enemies, and gives **4 seconds of Golden Invulnerable Shield**!
-* Pre-wired to trigger your Adsterra Direct Link in a new tab.
-
-### 5. 💰 2X Coins Claim on Game Over
-* Doubles your match earnings with a single tap (triggers Adsterra Direct Link).
+A high-performance, real-time 3D multiplayer-style snake survival game with dedicated Gaming Homepage, Player Game IDs, Finger Touch Controls, and Real-Time Global Leaderboard.
 
 ---
 
-## 💸 Adsterra Connect Kaise Karein (Monetization Setup)
+## 🌟 Naye Features (v3.0 Major Update)
 
-`index.html` open karein aur line ~445 par `window.ADSTERRA` configuration dekhein:
-
-```javascript
-/* =========================================================
-   ADSTERRA MONETIZATION SETTINGS
-   ========================================================= */
-window.ADSTERRA = {
-  // 1. Apna Adsterra Direct Link URL yahan paste karein:
-  directLink: 'https://www.profitablecpmrate.com/your-adsterra-direct-link-here',
-
-  // 2. Triggers (true = On, false = Off)
-  enableReviveAd: true,          // Revive button click par ad trigger hoga
-  enableDoubleCoinsAd: true,     // 2X Coins click par ad trigger hoga
-  enableFreeSkinAd: true,        // Free Skin unlock par ad trigger hoga
-  gameOverAdEveryNMatches: 2,    // Har 2 matches ke baad Game Over par ad trigger hoga
-};
-```
-
-### Banner Ads Lagane Ke Liye:
-1. **Adsterra Dashboard** se `300x250` Banner script copy karein.
-2. `index.html` mein `<div class='ad-slot' data-ad='menu'>` aur `<div class='ad-slot' data-ad='over'>` mein script paste karein.
+### 1. 🏠 Brand New Gaming Homepage (Lobby)
+- **Dedicated Landing Page:** Game shuru hone se pehle ek sleek cyberpunk portal milta hai.
+- **Player Profile Pill:** Screen ke top-right me aapka Avatar, Player Name, **Game ID (`SFG-XXXXX`)**, aur Coins Wallet balance dikhta hai.
+- **Game Modes:**
+  - 👑 **Battle Royale:** 10 snakes, shrinking safe zone ring, last snake standing.
+  - ⚡ **Turbo Rush:** Fast-paced speed frenzy with giant food orbs.
+  - 🛡️ **Endless Growth:** Casual survival mode to grow as big as possible without ring shrinking.
+- **Daily Rewards:** Har 24 ghante me **100 🪙 free coins** claim karne ka button.
+- **Skins Wardrobe:** 11 custom snake skins (Sunburst, Red Viper, Emerald, Golden Cobra, Shadow Monarch, etc.) coins se unlock karne ke liye.
 
 ---
 
-## 🕹️ Controls Guide
-| Action | Mobile / Touch | Desktop |
+### 2. 👤 Login, Sign Up & Permanent Game ID System
+- **Auto-Generated Game ID:** Har naye player ko ek unique permanent Game ID milti hai (jaise `SFG-79315`).
+- **Profile / Sign Up Modal:**
+  - Apna custom Player Name chunein.
+  - 12 high-resolution Avatar emojis (🐍, 🐉, 👑, ⚡, 🦁, 💎, 💀, 🤖, 🐯, 🦅, 🔥, 🏆).
+  - 4-digit Security PIN set karein taaki aapka account aur coins surakshit rahein.
+- **One-Click Guest Play:** Bina password ke direct instant play with guest Game ID.
+- **Clipboard Copy:** Game ID ke paas **"📋 Copy Game ID"** button diya gaya hai.
+- **Profile Stats:** Total matches played, total kills, best mass score, win count, aur rank tier (Bronze, Silver, Gold, Platinum, Diamond).
+
+---
+
+### 3. 👆 Ungli Se Snake Control (Finger Touch & Slither Steer)
+Mobile users ke liye snake control ko bilkul natural aur buttery smooth banaya gaya hai:
+- **👆 Direct Finger Follow (Ungli Se Control):**
+  - Screen par kahin bhi ungli rakh kar drag karein — snake turant aapki ungli ki disha me move karega!
+  - Ungli ke neeche ek animated glowing neon **Touch Ring / Pointer** dikhta hai.
+  - **Double-Tap Boost:** Screen par jaldi se double-tap karke hold karne par Turbo Boost accelerate hota hai!
+  - **Two-Finger Hold Boost:** Screen par 2 ungliyan rakhne par bhi Turbo Boost chalu ho jata hai.
+- **🔲 4-Way D-Pad Buttons:** Screen ke left side me arcade style ▲ ◀ ▶ ▼ buttons (vibration feedback ke sath).
+- **🕹️ 360° Virtual Joystick:** Smooth floating analog thumbstick.
+- **⚡ Dedicated BOOST Button:** Screen ke right bottom me glowing turbo boost button.
+- *Controls Mode aap Homepage par ya game ke andar top button se kabhi bhi badal sakte hain!*
+
+---
+
+### 4. 🏆 Real Global Leaderboard
+- Real-time dynamic leaderboard system jisme har match ke scores record hote hain.
+- **Top 10 Champions:** Medals (🥇 Gold, 🥈 Silver, 🥉 Bronze), Player Names, unique **Game IDs**, Mass Scores, aur Kills show karta hai.
+- **Player High Score Tracking:** Aapka Game ID aur high score automatically leaderboard me rank hota hai aur card ke bottom me aapki exact rank highlight hoti hai.
+
+---
+
+### 5. 💰 Adsterra Monetization & Earning Ready
+Game me high-CTR earning zones pehle se integrate hain:
+1. **Adsterra Direct Link (`window.ADSTERRA.directLink`):**
+   - **Second Chance Revive:** Maut ke baad 5-second countdown modal me player revive kar sakta hai (4s Golden Shield ke sath).
+   - **Claim 2X Coins:** Game Over hone par coins ko 2 guna claim karne ka rewarded trigger.
+   - **Periodic Game Over Ad:** Har 2 matches baad popunder trigger.
+2. **Banner Ad Slots:**
+   - Homepage Top Banner (728x90 / Responsive)
+   - Homepage Bottom Banner (300x250)
+   - Game Over Screen Banner
+   - *Code me clearly tagged comments hain:* `<!-- [ADSTERRA AD CODE] Paste your script here -->`
+
+---
+
+## 🛠️ Adsterra Connect Kaise Karein:
+
+1. `index.html` kholein aur line 45 par apna Direct Link paste karein:
+   ```javascript
+   window.ADSTERRA = {
+     directLink: 'https://www.profitablecpmrate.com/YOUR_DIRECT_LINK_HERE',
+     enableReviveAd: true,
+     enableDoubleCoinsAd: true,
+     gameOverAdEveryNMatches: 2,
+   };
+   ```
+2. Homepage banner ke liye `id='homeAdTop'` aur `id='homeAdBottom'` me apna Adsterra script tag paste kar dein.
+
+---
+
+## 🚀 Controls Summary
+| Action | Mobile / Touch | PC (Keyboard & Mouse) |
 |---|---|---|
-| Steer Snake | D-Pad Buttons or Joystick | Mouse, Arrow Keys, WASD |
-| Speed Boost | Hold ⚡ BOOST button | Hold Left Click or Spacebar |
-| Toggle Controls | Tap 🎮 Button | — |
-| Leaderboard | Tap 🏆 Button | Tap 🏆 Button |
-| Pause Game | Tap ⏸️ Button | Press 'P' or 'Escape' |
-| Mute Audio | Tap 🔊 Button | Tap 🔊 Button |
+| **Steer Snake** | Ungli se drag karein / D-Pad / Joystick | Mouse move ya Arrow Keys / W, A, S, D |
+| **Turbo Boost** | ⚡ BOOST button / Double-tap / 2-finger touch | Spacebar hold ya Left Mouse Click |
+| **Switch Controls** | 🎮 Quick toggle button (Top corner) | P ya Esc for Pause menu |
+| **Pause Game** | ⏸️ Pause button | P key / Escape key |
