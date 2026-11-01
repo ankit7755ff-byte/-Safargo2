@@ -202,6 +202,9 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 }
 
 
+
+#sr #mobileControls{display:none}
+@media(max-width:900px){#sr.playing #mobileControls{display:block;position:fixed;inset:0;z-index:9999;pointer-events:none}#sr #mobileJoy{display:block!important;position:absolute;left:22px;bottom:calc(26px + env(safe-area-inset-bottom,0px));width:132px;height:132px;border:3px solid rgba(255,255,255,.95);border-radius:50%;background:rgba(8,35,42,.42);box-shadow:0 3px 12px #0008;pointer-events:auto;touch-action:none}#sr #mobileJoyKnob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px;border-radius:50%;background:#fff;border:3px solid #173b3c;box-shadow:0 3px 8px #0008;pointer-events:none}#sr #mobileBoost{position:absolute;right:22px;bottom:calc(42px + env(safe-area-inset-bottom,0px));width:88px;height:88px;border:3px solid white;border-radius:50%;background:#ffc93c;color:#142d2d;font-weight:900;font-size:16px;box-shadow:0 4px 0 #a96b13;pointer-events:auto;touch-action:none}#sr #mobileBoost span{display:block;font-size:11px}}
 </style>
 </head>
 <body>
@@ -226,6 +229,10 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
   <div id='joy'><div id='joyKnob'></div></div>
   <div aria-label='Snake direction controls' id='dpad'><button aria-label='Up' data-dir='up' type='button'>▲</button><button aria-label='Left' data-dir='left' type='button'>◀</button><button aria-label='Right' data-dir='right' type='button'>▶</button><button aria-label='Down' data-dir='down' type='button'>▼</button></div>
   <div aria-label='Boost' id='boostBtn' role='button'><svg aria-hidden='true' viewbox='0 0 24 24'><path d='M13 2 4 14h6l-1 8 9-12h-6z' fill='currentColor'></path></svg><span>BOOST</span></div>
+</div>
+<div id='mobileControls' aria-label='Mobile game controls'>
+  <div id='mobileJoy' aria-label='Move snake with joystick'><div id='mobileJoyKnob'></div></div>
+  <button id='mobileBoost' type='button'>⚡<span>BOOST</span></button>
 </div>
 <div id='banner'></div>
 <div id='toasts'></div>
@@ -1921,6 +1928,15 @@ $('quitBtn').addEventListener('click', () => { setPaused(false); goMenu(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) setPaused(true); });
 addEventListener('keydown', e => { const k = e.key.toLowerCase(); if ((k === 'p' || k === 'escape') && G.mode === 'play') setPaused(!G.paused); });
 
+
+// Dedicated fixed mobile controls, independent of the HUD stacking context.
+const mobileJoy=$('mobileJoy'), mobileJoyKnob=$('mobileJoyKnob'), mobileBoost=$('mobileBoost');
+function mobileJoyStart(e){if(G.mode!=='play')return;e.preventDefault();mobileJoy.setPointerCapture(e.pointerId);const r=mobileJoy.getBoundingClientRect();input.joy={id:e.pointerId,ox:r.left+r.width/2,oy:r.top+r.height/2};moveJoy(e);}
+function mobileJoyMove(e){if(input.joy&&input.joy.id===e.pointerId){const dx=e.clientX-input.joy.ox,dy=e.clientY-input.joy.oy,l=Math.hypot(dx,dy),k=l?Math.min(l,42)/l:0;if(l>5)input.joyAng=Math.atan2(dy,dx);mobileJoyKnob.style.transform='translate('+dx*k+'px,'+dy*k+'px)';}}
+function mobileJoyEnd(e){if(input.joy&&input.joy.id===e.pointerId){input.joy=null;mobileJoyKnob.style.transform='';}}
+mobileJoy.addEventListener('pointerdown',mobileJoyStart);mobileJoy.addEventListener('pointermove',mobileJoyMove);mobileJoy.addEventListener('pointerup',mobileJoyEnd);mobileJoy.addEventListener('pointercancel',mobileJoyEnd);
+mobileBoost.addEventListener('pointerdown',e=>{if(G.mode==='play'){e.preventDefault();input.touchBoost=true;mobileBoost.classList.add('on');}});const mobileBoostOff=()=>{input.touchBoost=false;mobileBoost.classList.remove('on')};mobileBoost.addEventListener('pointerup',mobileBoostOff);mobileBoost.addEventListener('pointercancel',mobileBoostOff);mobileBoost.addEventListener('pointerleave',mobileBoostOff);
+
 function startGame() {
   Sound.init();
   if (isTouch && !document.fullscreenElement && document.documentElement.requestFullscreen) {
@@ -1929,6 +1945,7 @@ function startGame() {
   G.paused = false; $('paused').hidden = true; root.classList.remove('paused');
   $('menu').hidden = true; $('over').hidden = true; $('hud').hidden = false;
   root.classList.add('playing');
+  if (matchMedia('(max-width:900px)').matches) root.classList.add('touch');
   G.mode = 'play';
   newMatch(true);
   banner('GO!', 'Eat fruit, grow, survive');
