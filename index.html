@@ -315,6 +315,7 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
   </div>
   <div class='dock'>
     <h1 class='logo'>Serpent<span>Royale</span></h1>
+    <div style='display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ffca28,#ff9100);color:#10323a;font-weight:900;padding:5px 14px;border-radius:999px;font-size:12px;box-shadow:0 3px 0 #b37400;width:fit-content;letter-spacing:.04em'>⚡ v2.0: D-PAD CONTROLS &amp; LEADERBOARD</div>
     <p class='tagline'>Ten snakes. One shrinking ring. Grow big enough to swallow the rest.</p>
     <div class='card'>
       <div style='display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.72);padding:8px 14px;border-radius:14px;font-weight:800'>
@@ -323,6 +324,10 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
       </div>
       <div class='field'><label for='nameIn'>YOUR NAME</label><input autocomplete='off' id='nameIn' maxlength='14' spellcheck='false' value='You'/></div>
       <div class='field'><span class='lbl' id='skinLbl'>SKIN</span><div aria-labelledby='skinLbl' id='skins' role='radiogroup'></div></div>
+      <div style='display:flex;justify-content:space-between;align-items:center;background:rgba(16,50,58,0.08);padding:8px 12px;border-radius:12px;font-weight:700;font-size:13px'>
+        <span>🎮 Controls Mode:</span>
+        <button id='menuCtrlToggle' type='button' style='background:var(--ink);color:#fff;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:800;cursor:pointer'>🔲 D-Pad Buttons</button>
+      </div>
       <details id='how'><summary>How to play</summary>
       <ul class='rules'>
         <li style='--dot:#ffc93c'>Eat fruit to grow. Bananas, grapes, watermelons and golden apples are worth the most.</li>
@@ -589,16 +594,18 @@ const Controls = {
     toast('Controls: ' + (this.mode === 'dpad' ? 'D-PAD BUTTONS' : 'VIRTUAL JOYSTICK'));
   },
   apply() {
-    const dpad = $('ctrlDpad'), joy = $('ctrlJoy'), btn = $('ctrlToggleBtn');
+    const dpad = $('ctrlDpad'), joy = $('ctrlJoy'), btn = $('ctrlToggleBtn'), menuBtn = $('menuCtrlToggle');
     if (dpad && joy) {
       if (this.mode === 'dpad') {
         dpad.style.display = 'grid';
         joy.style.display = 'none';
         if (btn) btn.innerHTML = '🔲';
+        if (menuBtn) menuBtn.innerHTML = '🔲 D-Pad Buttons';
       } else {
         dpad.style.display = 'none';
         joy.style.display = 'block';
         if (btn) btn.innerHTML = '🕹️';
+        if (menuBtn) menuBtn.innerHTML = '🕹️ Virtual Joystick';
       }
     }
   }
@@ -2362,6 +2369,7 @@ addEventListener('keydown', e => { const k = e.key.toLowerCase(); if ((k === 'p'
 
 // UI Buttons & Modals
 $('ctrlToggleBtn').addEventListener('click', () => Controls.toggle());
+if ($('menuCtrlToggle')) $('menuCtrlToggle').addEventListener('click', () => Controls.toggle());
 $('leadBtn').addEventListener('click', () => Leaderboard.open());
 $('menuLeadBtn').addEventListener('click', () => Leaderboard.open());
 $('overLeadBtn').addEventListener('click', () => Leaderboard.open());
