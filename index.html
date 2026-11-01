@@ -1,253 +1,63 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#10323a"><meta name="description" content="Serpent Royale — 3D snake arena survival game. Eat, grow, boost and survive.">
-<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#8fd2a4">
+<meta name="description" content="Serpent Royale — a 3D snake survival arena. Eat, grow, and become the last snake standing.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>Serpent Royale — 3D Snake Arena</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Lilita+One&display=swap" rel="stylesheet">
-<style>*/
-
-/* Layout: full-bleed 3D meadow arena; HUD pinned to the corners; menus dock left as a chunky toy-plastic panel */
-#sr{
-  --ink:#10323a;
-  --ink-soft:#4a6f78;
-  --glass:rgba(255,255,255,.9);
-  --glass-dim:rgba(255,255,255,.72);
-  --saffron:#ffb627;
-  --saffron-deep:#c97a00;
-  --coral:#ff4d6d;
-  --leaf:#1f8a5b;
-  --ground:#8fd2a4;
-  --shade:rgba(16,50,58,.6);
-  --white:#ffffff;
-  --f-display:'Lilita One','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
-  --f-body:'Baloo 2',ui-rounded,'Segoe UI',system-ui,sans-serif;
-  color-scheme:light;
-}
-html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
-#sr{position:fixed;inset:0;z-index:2147483000;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.4;text-align:left;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;touch-action:manipulation}
-#sr :is(div,section,aside,button,input,h1,h2,h3,p,ul,ol,li,details,summary,small,b,i,span,canvas,iframe,textarea){all:revert;box-sizing:border-box}
-#sr [hidden]{display:none!important}
-#sr button{border:0 none!important}
-#sr input{-webkit-user-select:text;user-select:text}
-#sr #gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
-#sr #tags{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-#sr .tag{position:absolute;left:0;top:0;font:400 13px/1 var(--f-display);color:var(--white);letter-spacing:.02em;white-space:nowrap;
-  text-shadow:0 2px 0 var(--ink),1px 0 0 var(--ink),-1px 0 0 var(--ink),0 -1px 0 var(--ink);will-change:transform}
-#sr .tag.me{color:var(--saffron);font-size:15px}
-#sr .tag.prey{color:#7dffa8}
-#sr .tag.danger{color:#ff8a9e}
-#sr #vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(16,50,58,.28) 100%)}
-#sr #hurt{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(255,77,109,.55) 100%);transition:opacity .35s}
-#sr #hurt.on{opacity:1;transition:none}
-
-#sr /* ---------- HUD ---------- */
-#hud{position:fixed;inset:0;pointer-events:none}
-#sr .hud-tl{position:absolute;left:calc(14px + env(safe-area-inset-left,0px));top:calc(12px + env(safe-area-inset-top,0px));display:grid;gap:6px;justify-items:start}
-#sr .lenbox{background:var(--glass);border-radius:16px;padding:6px 14px 4px;box-shadow:0 4px 0 var(--shade)}
-#sr .lenbox small{display:block;font:800 11px/1 var(--f-body);letter-spacing:.12em;color:var(--ink-soft)}
-#sr .lenbox b{font:400 34px/1.05 var(--f-display);font-variant-numeric:tabular-nums}
-#sr .chips{display:flex;gap:6px}
-#sr .chip{background:var(--glass-dim);border-radius:999px;padding:2px 10px;font:700 14px/1.6 var(--f-body)}
-#sr .chip b{font-family:var(--f-display);font-weight:400}
-#sr #feed{display:grid;gap:3px;margin-top:4px}
-#sr #feed div{font:700 13px/1.4 var(--f-body);color:var(--white);text-shadow:0 1px 0 var(--ink),0 0 4px var(--ink);transition:opacity .6s}
-#sr .hud-tc{position:absolute;left:50%;transform:translateX(-50%);top:calc(12px + env(safe-area-inset-top,0px));display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:46vw}
-#sr .pill{background:var(--glass);border-radius:999px;padding:3px 14px;font:700 14px/1.6 var(--f-body);box-shadow:0 3px 0 var(--shade);white-space:nowrap}
-#sr .pill b{font:400 17px/1 var(--f-display)}
-#sr .pill.zone{background:var(--coral);color:var(--white)}
-#sr .pill.zone.calm{background:var(--glass);color:var(--ink)}
-#sr .hud-tr{position:absolute;right:calc(14px + env(safe-area-inset-right,0px));top:calc(12px + env(safe-area-inset-top,0px));background:var(--glass);border-radius:16px;padding:8px 12px;box-shadow:0 4px 0 var(--shade);min-width:170px}
-#sr .hud-tr h3{margin:0 0 4px;font:800 11px/1 var(--f-body);letter-spacing:.12em;color:var(--ink-soft)}
-#sr #board{list-style:none;margin:0;padding:0;display:grid;gap:1px}
-#sr #board li{display:grid;grid-template-columns:20px 12px 1fr auto;gap:6px;align-items:center;font:700 14px/1.45 var(--f-body)}
-#sr #board li .n{color:var(--ink-soft);font-variant-numeric:tabular-nums}
-#sr #board li i{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
-#sr #board li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
-#sr #board li b{font:400 15px/1 var(--f-display);font-variant-numeric:tabular-nums}
-#sr #board li.me{color:var(--saffron-deep)}
-#sr #minimap{position:absolute;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));width:140px;height:140px;border-radius:50%;box-shadow:0 4px 0 var(--shade)}
-#sr #boostBtn{display:none}
-#sr.touch #boostBtn{display:grid;place-items:center;align-content:center;gap:0;position:absolute;pointer-events:auto;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(24px + env(safe-area-inset-bottom,0px));width:92px;height:92px;border-radius:50%;
-  background:var(--saffron);color:var(--ink);font:400 15px/1 var(--f-display);box-shadow:0 6px 0 var(--saffron-deep);touch-action:none;transition:opacity .2s}
-#sr #boostBtn svg{width:30px;height:30px}
-#sr.touch #boostBtn.low{opacity:.45}
-#sr.touch #boostBtn.on{transform:translateY(4px);box-shadow:0 2px 0 var(--saffron-deep)}
-#sr.touch #minimap{width:104px;height:104px;right:auto;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px))}
-#sr #joy{position:absolute;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;border:3px solid rgba(255,255,255,.7);background:rgba(16,50,58,.12);display:none}
-#sr #joy.on{display:block}
-#sr #joyKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:var(--white);box-shadow:0 3px 0 var(--shade)}
-#sr #banner{position:fixed;left:0;right:0;top:15%;text-align:center;pointer-events:none;font:400 clamp(40px,8vw,84px)/1 var(--f-display);color:var(--white);
-  -webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 6px 0 var(--ink);opacity:0}
-#sr #banner small{display:block;margin-top:8px;font:800 clamp(15px,2.4vw,22px)/1.2 var(--f-body);-webkit-text-stroke:0;text-shadow:0 2px 0 var(--ink),0 0 6px var(--ink)}
-#sr #banner.show{animation:pop 2.2s ease forwards}
-@keyframes pop{0%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1.08)}20%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-12px)}}
-#sr #toasts{position:fixed;left:0;right:0;top:64%;display:grid;justify-items:center;gap:6px;pointer-events:none}
-#sr .toast{font:400 24px/1 var(--f-display);color:var(--white);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 3px 0 var(--ink);animation:rise 1.3s ease forwards}
-#sr .toast.good{color:var(--saffron)}
-#sr .toast.bad{color:var(--coral)}
-@keyframes rise{0%{opacity:0;transform:translateY(14px) scale(.8)}15%{opacity:1;transform:none}75%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
-#sr #corner{position:fixed;z-index:5;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px}
-#sr.touch.playing #corner{bottom:calc(124px + env(safe-area-inset-bottom,0px))}
-#sr:not(.playing) #corner{bottom:auto;left:auto;top:calc(14px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px))}
-#sr:not(.playing) #pauseBtn{display:none}
-#sr.paused #corner{display:none}
-#sr .round{width:44px;height:44px;border:0;border-radius:50%;background:var(--glass);color:var(--ink);display:grid;place-items:center;box-shadow:0 3px 0 var(--shade);cursor:pointer;padding:0}
-#sr .round:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
-#sr .round svg{width:22px;height:22px}
-#sr #muteBtn .x{display:none}
-#sr #muteBtn.muted .x{display:block}
-#sr #muteBtn.muted .w{display:none}
-
-#sr /* ---------- Screens ---------- */
-.screen{position:fixed;inset:0;z-index:4;display:flex;align-items:flex-start;overflow-y:auto;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px;
-  background:linear-gradient(90deg,rgba(16,50,58,.62) 0%,rgba(16,50,58,.3) 45%,rgba(16,50,58,0) 75%)}
-#sr .dock>*,#sr .card>*,#sr .field{min-width:0}
-#sr .dock{width:min(420px,100%);min-width:0;margin-left:clamp(0px,6vw,90px);margin-block:auto;display:grid;gap:16px}
-#sr .logo{margin:0;font:400 clamp(48px,min(10vw,11vh),108px)/.86 var(--f-display);color:var(--white);-webkit-text-stroke:5px var(--ink);paint-order:stroke fill;text-shadow:0 9px 0 var(--ink);letter-spacing:.01em;text-wrap:balance}
-#sr .logo span{display:block;color:var(--saffron)}
-#sr .tagline{margin:0;font:700 18px/1.35 var(--f-body);color:var(--white);text-shadow:0 2px 0 var(--ink)}
-#sr .card{background:var(--glass);border-radius:22px;padding:18px;box-shadow:0 8px 0 var(--shade);display:grid;gap:14px}
-#sr .field label,#sr .field .lbl{display:block;font:800 12px/1 var(--f-body);letter-spacing:.12em;color:var(--ink-soft);margin-bottom:6px}
-#sr #nameIn{width:100%;box-sizing:border-box;border:3px solid var(--ink);border-radius:14px;padding:8px 12px;font:700 18px/1.2 var(--f-body);color:var(--ink);background:var(--white)}
-#sr #nameIn:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
-#sr #skins{display:flex;flex-wrap:wrap;gap:8px}
-#sr .skin{width:38px;height:38px;border-radius:50%;border:3px solid transparent;padding:0;cursor:pointer;box-shadow:0 3px 0 var(--shade)}
-#sr .skin[aria-checked="true"]{box-shadow:0 0 0 3px var(--white),0 0 0 6px var(--ink);transform:translateY(-2px)}
-#sr .skin:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
-#sr .btn{border:0;border-radius:16px;cursor:pointer;font:400 26px/1 var(--f-display);padding:14px 20px;color:var(--ink);background:var(--saffron);box-shadow:0 6px 0 var(--saffron-deep);letter-spacing:.02em}
-#sr .btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--saffron-deep)}
-#sr .btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
-#sr .btn.ghost{background:var(--white);box-shadow:0 6px 0 var(--shade);font-size:20px}
-#sr #how summary{cursor:pointer;font:800 12px/1 var(--f-body);letter-spacing:.12em;color:var(--ink-soft);text-transform:uppercase;padding:4px 0}
-#sr #how summary:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
-#sr #how[open] summary{margin-bottom:8px}
-#sr .rules{margin:0;padding:0;list-style:none;display:grid;gap:4px;font:600 15px/1.35 var(--f-body)}
-#sr .rules li{display:grid;grid-template-columns:22px 1fr;gap:6px;align-items:start}
-#sr .rules li::before{content:"";width:12px;height:12px;margin-top:5px;border-radius:50%;background:var(--dot,var(--leaf));box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
-#sr .keys{font:600 13px/1.4 var(--f-body);color:var(--ink-soft);margin:0}
-#sr .result{font:400 clamp(52px,9vw,96px)/.9 var(--f-display);margin:0;color:var(--white);-webkit-text-stroke:5px var(--ink);paint-order:stroke fill;text-shadow:0 8px 0 var(--ink)}
-#sr .result.win{color:var(--saffron)}
-#sr .cause{margin:0;font:700 19px/1.3 var(--f-body);color:var(--white);text-shadow:0 2px 0 var(--ink)}
-#sr .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-#sr .stats div{display:grid;gap:2px}
-#sr .stats small{font:800 11px/1 var(--f-body);letter-spacing:.1em;color:var(--ink-soft)}
-#sr .stats b{font:400 28px/1 var(--f-display);font-variant-numeric:tabular-nums}
-#sr .row{display:flex;gap:10px;flex-wrap:wrap}
-#sr .row .btn{flex:1 1 140px}
-#sr #err{position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:var(--ink);color:var(--white);font:700 18px/1.4 var(--f-body);text-align:center;z-index:9}
-@media (max-height:640px){
-  #sr .tagline{display:none}
-}
-@media (max-width:640px){
-  #sr .screen{background:linear-gradient(0deg,rgba(16,50,58,.7) 0%,rgba(16,50,58,.35) 60%,rgba(16,50,58,0) 100%)}
-  #sr .dock{margin-left:0;margin-block:auto 0;gap:12px}
-  #sr .hud-tr{min-width:0;padding:6px 10px}
-  #sr #board li span{max-width:72px}
-  #sr #board li{font-size:13px}
-  #sr #board li:nth-child(n+4):not(.me){display:none}
-  #sr #feed{display:none}
-  #sr .lenbox b{font-size:28px}
-  #sr .hud-tc{left:calc(14px + env(safe-area-inset-left,0px));transform:none;top:calc(104px + env(safe-area-inset-top,0px));flex-direction:column;align-items:flex-start;max-width:none}
-  #sr .pill{font-size:13px;padding:2px 12px}
-  #sr .stats b{font-size:24px}
-  #sr .rules{font-size:13px}
-  #sr #skins{flex-wrap:nowrap;overflow-x:auto;padding:4px 2px 8px;margin:0 -2px;scrollbar-width:none;touch-action:pan-x}
-  #sr #skins::-webkit-scrollbar{display:none}
-  #sr .skin{flex:0 0 auto}
-  #sr .logo{font-size:clamp(44px,15vw,64px);-webkit-text-stroke:4px var(--ink);text-shadow:0 6px 0 var(--ink)}
-  #sr .tagline{font-size:15px}
-  #sr .card{padding:14px;gap:12px}
-  #sr .btn{padding:16px 20px}
-  #sr .screen{touch-action:pan-y}
-}
-@media (prefers-reduced-motion:reduce){
-  #sr #banner.show,#sr .toast{animation-duration:.01s;animation-delay:0s}
-  #sr #banner.show{animation:none;opacity:1}
-}
-
-/* ---------- Ads ---------- */
-#sr .ad-col{position:absolute;right:max(24px,3vw);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:14px}
-#sr .ad-wrap{display:grid;justify-items:center;gap:4px}
-#sr .ad-wrap small{font:700 10px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--white);opacity:.8}
-#sr .ad-wrap.empty{display:none}
-#sr .ad-slot{display:grid;place-items:center;overflow:hidden;border-radius:8px;max-width:calc(100vw - 32px)}
-#sr .ad-slot iframe{border:0;display:block;background:transparent}
-#sr .ad-slot.ph{border:2px dashed rgba(255,255,255,.8);background:rgba(16,50,58,.35);color:var(--white);font:700 14px/1.3 var(--f-body);text-align:center}
-@media (max-width:900px){
-  #sr .screen{flex-direction:column;align-items:stretch}
-  #sr .ad-col{display:contents}
-  #sr .ad-wrap{order:0;margin:0 auto 14px}
-  #sr .dock{order:1;margin-block:auto 0}
-  #sr .ad-wrap.strip{order:2;margin:12px auto 0}
-  #sr .screen{padding-block:12px}
-  #sr .tagline{display:none}
-}
-@media (max-width:900px) and (max-height:700px){
-  #sr #menu .ad-wrap:not(.strip){display:none}
-}
-
-</style></head><body>
-<script>window.SR_ADS={popunderLink:'',popunderMinGapSeconds:45,showPlaceholders:false};</script>
-<textarea data-h='250' data-w='300' hidden='hidden' id='ad-code-menu' style='display:none'><![CDATA[
-
-]]></textarea>
-<textarea data-h='250' data-w='300' hidden='hidden' id='ad-code-over' style='display:none'><![CDATA[
-
-]]></textarea>
-<textarea data-h='250' data-w='300' hidden='hidden' id='ad-code-pause' style='display:none'><![CDATA[
-
-]]></textarea>
-<textarea data-h='50' data-w='320' hidden='hidden' id='ad-code-strip-a' style='display:none'><![CDATA[
-
-]]></textarea>
-<textarea data-h='60' data-w='468' hidden='hidden' id='ad-code-strip-b' style='display:none'><![CDATA[
-
-]]></textarea>
+<style>
+#sr-blogger{display:none}
+</style>
+</head>
+<body>
 <div id='sr'>
 <canvas aria-label='Game arena' id='gl' tabindex='0'/>
-<div id='tags'/>
-<div id='vignette'/>
-<div id='hurt'/>
+<div id='tags'></div>
+<div id='vignette'></div>
+<div id='hurt'></div>
 
 <div hidden='hidden' id='hud'>
   <div class='hud-tl'>
     <div class='lenbox'><small>LENGTH</small><b id='hLen'>14</b></div>
     <div class='chips'><span class='chip'>Rank <b id='hRank'>#1</b></span><span class='chip'>Kills <b id='hKills'>0</b></span></div>
-    <div id='feed'/>
+    <div id='feed'></div>
   </div>
   <div class='hud-tc'>
     <div class='pill'><b id='hAlive'>10</b> snakes left</div>
     <div class='pill zone calm' id='hZone'>Ring closes in 20s</div>
   </div>
-  <div class='hud-tr'><h3>LEADERBOARD</h3><ol id='board'/></div>
+  <div class='hud-tr'><h3>LEADERBOARD</h3><ol id='board'></ol></div>
   <canvas height='280' id='minimap' width='280'/>
-  <div id='joy'><div id='joyKnob'/></div>
-  <div aria-label='Boost' id='boostBtn' role='button'><svg aria-hidden='true' viewbox='0 0 24 24'><path d='M13 2 4 14h6l-1 8 9-12h-6z' fill='currentColor'/></svg><span>BOOST</span></div>
+  <div id='joy'><div id='joyKnob'></div></div>
+  <div aria-label='Boost' id='boostBtn' role='button'><svg aria-hidden='true' viewbox='0 0 24 24'><path d='M13 2 4 14h6l-1 8 9-12h-6z' fill='currentColor'></path></svg><span>BOOST</span></div>
 </div>
-<div id='banner'/>
-<div id='toasts'/>
+<div id='banner'></div>
+<div id='toasts'></div>
 
 <div id='corner'>
-<button aria-label='Pause game' class='round' id='pauseBtn' type='button'><svg aria-hidden='true' viewbox='0 0 24 24'><rect fill='currentColor' height='14' rx='1.2' width='4' x='6' y='5'/><rect fill='currentColor' height='14' rx='1.2' width='4' x='14' y='5'/></svg></button>
+<button aria-label='Pause game' class='round' id='pauseBtn' type='button'><svg aria-hidden='true' viewbox='0 0 24 24'><rect fill='currentColor' height='14' rx='1.2' width='4' x='6' y='5'></rect><rect fill='currentColor' height='14' rx='1.2' width='4' x='14' y='5'></rect></svg></button>
 <button aria-label='Mute sound' class='round' id='muteBtn' type='button'>
-  <svg fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.4' viewbox='0 0 24 24'><path d='M4 9h4l5-4v14l-5-4H4z' fill='currentColor'/><path class='w' d='M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12'/><path class='x' d='M17 9l5 6M22 9l-5 6'/></svg>
+  <svg fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.4' viewbox='0 0 24 24'><path d='M4 9h4l5-4v14l-5-4H4z' fill='currentColor'></path><path class='w' d='M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12'></path><path class='x' d='M17 9l5 6M22 9l-5 6'></path></svg>
 </button>
 </div>
 
 <section class='screen' id='menu'>
   <div class='ad-col'>
-    <aside aria-label='Advertisement' class='ad-wrap'><small>Advertisement</small><div class='ad-slot' data-ad='menu'/></aside>
-    <aside aria-label='Advertisement' class='ad-wrap strip'><small>Advertisement</small><div class='ad-slot' data-ad='strip-menu'/></aside>
+    <aside aria-label='Advertisement' class='ad-wrap'><small>Advertisement</small><div class='ad-slot' data-ad='menu'></div></aside>
+    <aside aria-label='Advertisement' class='ad-wrap strip'><small>Advertisement</small><div class='ad-slot' data-ad='strip-menu'></div></aside>
   </div>
   <div class='dock'>
     <h1 class='logo'>Serpent<span>Royale</span></h1>
     <p class='tagline'>Ten snakes. One shrinking ring. Grow big enough to swallow the rest.</p>
     <div class='card'>
       <div class='field'><label for='nameIn'>YOUR NAME</label><input autocomplete='off' id='nameIn' maxlength='14' spellcheck='false' value='You'/></div>
-      <div class='field'><span class='lbl' id='skinLbl'>SKIN</span><div aria-labelledby='skinLbl' id='skins' role='radiogroup'/></div>
+      <div class='field'><span class='lbl' id='skinLbl'>SKIN</span><div aria-labelledby='skinLbl' id='skins' role='radiogroup'></div></div>
       <details id='how'><summary>How to play</summary>
       <ul class='rules'>
         <li style='--dot:#ffc93c'>Eat fruit to grow. Bananas, grapes, watermelons and golden apples are worth the most.</li>
@@ -264,8 +74,8 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 
 <section class='screen' hidden='hidden' id='paused'>
   <div class='ad-col'>
-    <aside aria-label='Advertisement' class='ad-wrap'><small>Advertisement</small><div class='ad-slot' data-ad='pause'/></aside>
-    <aside aria-label='Advertisement' class='ad-wrap strip'><small>Advertisement</small><div class='ad-slot' data-ad='strip-pause'/></aside>
+    <aside aria-label='Advertisement' class='ad-wrap'><small>Advertisement</small><div class='ad-slot' data-ad='pause'></div></aside>
+    <aside aria-label='Advertisement' class='ad-wrap strip'><small>Advertisement</small><div class='ad-slot' data-ad='strip-pause'></div></aside>
   </div>
   <div class='dock'>
     <h2 class='result'>Paused</h2>
@@ -280,8 +90,8 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 
 <section class='screen' hidden='hidden' id='over'>
   <div class='ad-col'>
-    <aside aria-label='Advertisement' class='ad-wrap'><small>Advertisement</small><div class='ad-slot' data-ad='over'/></aside>
-    <aside aria-label='Advertisement' class='ad-wrap strip'><small>Advertisement</small><div class='ad-slot' data-ad='strip-over'/></aside>
+    <aside aria-label='Advertisement' class='ad-wrap'><small>Advertisement</small><div class='ad-slot' data-ad='over'></div></aside>
+    <aside aria-label='Advertisement' class='ad-wrap strip'><small>Advertisement</small><div class='ad-slot' data-ad='strip-over'></div></aside>
   </div>
   <div class='dock'>
     <h2 class='result' id='oTitle'>Eaten!</h2>
@@ -303,7 +113,9 @@ html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 </div>
 
 
-<script type='module'>import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.min.js';
+<script type="module">
+
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.min.js';
 window.__srBooted = true;
 // Keep the game layer directly under <body> so blog themes can't clip or offset it
 const root = document.getElementById('sr');
@@ -1185,8 +997,7 @@ function burst(x, y, z, col, n, spd, size) {
 /* ---------- snakes ---------- */
 let uid = 0;
 function makeSnake(o) {
-  const s = {
-    id: uid++, name: o.name, isPlayer: !!o.isPlayer, skin: o.skin, hex: o.skin.c1, cols: skinColors(o.skin),
+  const s = {    id: uid++, name: o.name, isPlayer: !!o.isPlayer, skin: o.skin, hex: o.skin.c1, cols: skinColors(o.skin),
     x: o.x, z: o.z, angle: o.angle, speed: CFG.baseSpeed,
     mass: o.mass, dm: o.mass, r: radiusOf(o.mass), n: 0,
     path: [], segs: new Float32Array(MAXSEG * 2), bb: [0, 0, 0, 0],
@@ -1995,5 +1806,9 @@ function setQuality(l) {
   resize();
 }
 // test hook
-window.__sr = { G, step, newMatch, startGame, CFG, renderer, render, updateVisuals, showAds, popunder, ADS };</script>
-</body></html>
+window.__sr = { G, step, newMatch, startGame, CFG, renderer, render, updateVisuals, showAds, popunder, ADS };
+
+
+</script>
+</body>
+</html>
