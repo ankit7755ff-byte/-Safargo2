@@ -1146,6 +1146,11 @@ html, body {
   #minimap { width: 90px; height: 90px; right: 10px; bottom: auto; top: 110px; }
 }
 </style>
+<!-- Adsterra Popunder -->
+<script data-cfasync="false" src="https://afders.org/1/2d4d3330ba0728c939ef99f7fabab42c"></script>
+<!-- Adsterra Social Bar -->
+<script async="async" data-cfasync="false" src="https://bicea.org/21/d820fc2e20fe22e3c7a72939e6bcaa8d"></script>
+<div id="container-d820fc2e20fe22e3c7a72939e6bcaa8d"></div>
 </head>
 
 <body>
@@ -1240,10 +1245,13 @@ html, body {
     </header>
 
     <!-- Top Adsterra Banner Slot -->
-    <div class='ad-slot-box' id='homeAdTop'>
-      <!-- [ADSTERRA AD CODE] Paste your 728x90 Banner Script or Code below -->
-      <span class='ad-slot-label'>⚡ Adsterra Sponsored Zone (Top Banner 728x90 / Responsive)</span>
-    </div>
+    <div class='ad-slot-box' id='homeAdTop' style='min-height:90px;overflow:hidden'>
+  <span class='ad-slot-label'>Sponsored</span>
+  <script>
+  atOptions = { 'key': 'bb707599c8b49cf8d666b767c02ae76b', 'format': 'iframe', 'height': 90, 'width': 728, 'params': {} };
+</script>
+<script src="https://bicea.org/22/bb707599c8b49cf8d666b767c02ae76b"></script>
+</div>
 
     <!-- Hero Section -->
     <section class='home-hero'>
@@ -1331,10 +1339,40 @@ html, body {
     </div>
 
     <!-- Bottom Adsterra Banner Slot -->
-    <div class='ad-slot-box' id='homeAdBottom'>
-      <!-- [ADSTERRA AD CODE] Paste your 300x250 Banner Script or Code below -->
-      <span class='ad-slot-label'>⚡ Adsterra Sponsored Zone (Square / Responsive Banner)</span>
+    
+    <!-- Additional Adsterra banner formats -->
+    <div class='ad-slot-box' id='homeAd468' style='min-height:60px;overflow:hidden'><span class='ad-slot-label'>Sponsored</span>
+      <script>
+  atOptions = { 'key': '26b78091acdfb3c417ad136641aeb17c', 'format': 'iframe', 'height': 60, 'width': 468, 'params': {} };
+</script>
+<script src="https://bicea.org/22/26b78091acdfb3c417ad136641aeb17c"></script>
     </div>
+    <div class='ad-slot-box' id='homeAd320' style='min-height:50px;overflow:hidden'><span class='ad-slot-label'>Sponsored</span>
+      <script>
+  atOptions = { 'key': 'b9acdd9802ca019b3be74c1e938ed51c', 'format': 'iframe', 'height': 50, 'width': 320, 'params': {} };
+</script>
+<script src="https://bicea.org/22/b9acdd9802ca019b3be74c1e938ed51c"></script>
+    </div>
+    <div class='ad-slot-box' id='homeAd160x300' style='min-height:300px;max-width:180px;overflow:hidden'><span class='ad-slot-label'>Sponsored</span>
+      <script>
+  atOptions = { 'key': '9756c665069bcc7001b1548b080ee1cf', 'format': 'iframe', 'height': 300, 'width': 160, 'params': {} };
+</script>
+<script src="https://bicea.org/22/9756c665069bcc7001b1548b080ee1cf"></script>
+    </div>
+    <div class='ad-slot-box' id='homeAd160x600' style='min-height:600px;max-width:180px;overflow:hidden'><span class='ad-slot-label'>Sponsored</span>
+      <script>
+  atOptions = { 'key': 'db24f969c503e7985f081c9c5045e50c', 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
+</script>
+<script src="https://bicea.org/22/db24f969c503e7985f081c9c5045e50c"></script>
+    </div>
+
+    <div class='ad-slot-box' id='homeAdBottom' style='min-height:250px;overflow:hidden'>
+  <span class='ad-slot-label'>Sponsored</span>
+  <script>
+  atOptions = { 'key': '06394231b99ade2aa856a995f05c7fff', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
+</script>
+<script src="https://bicea.org/22/06394231b99ade2aa856a995f05c7fff"></script>
+</div>
   </div>
 </div>
 
@@ -1575,7 +1613,7 @@ const MAXSEG = 180;
    ADSTERRA MONETIZATION SETTINGS
    ========================================================= */
 window.ADSTERRA = {
-  directLink: 'https://www.profitablecpmrate.com/your-adsterra-direct-link-here',
+  directLink: 'https://arwf.org/4/bb',
   enableReviveAd: true,
   enableDoubleCoinsAd: true,
   gameOverAdEveryNMatches: 2,
@@ -1583,7 +1621,7 @@ window.ADSTERRA = {
 let matchCount = 0;
 function triggerAdsterra(reason) {
   const link = (window.ADSTERRA && window.ADSTERRA.directLink) ? window.ADSTERRA.directLink.trim() : '';
-  if (!link || link.includes('your-adsterra-direct-link-here')) {
+  if (!link) {
     console.log('[Adsterra] Direct link triggered for:', reason);
     return;
   }
@@ -3811,6 +3849,7 @@ requestAnimationFrame(t => { last = t; requestAnimationFrame(frame); });
 
 </script>
 </div>
+<a href="https://arwf.org/4/bb" target="_blank" rel="nofollow sponsored noopener">Visit Sponsored Link</a>
 </body>
 </html>
 
